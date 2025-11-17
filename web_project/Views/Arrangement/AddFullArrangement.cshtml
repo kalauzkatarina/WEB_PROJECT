@@ -1,0 +1,191 @@
+﻿@{
+    ViewBag.Title = "Add Arrangement";
+    var user = ViewBag.LoggedUser as web_project.Models.User;
+}
+
+<div class="container mt-4">
+
+    <h2 class="text-center mb-4">Add New Arrangement</h2>
+
+    <!-- ======== JEDNA FORMA KOJA SADRŽI SVE ======== -->
+    <form action="@Url.Action("AddFullArrangement", "Arrangement")" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+
+        <!-- 1. Arrangement -->
+        <div class="card shadow mb-4" style="max-width: 900px; margin:auto;">
+            <div class="card-header text-center">
+                <h3>Arrangement Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" name="Name" placeholder="Enter the name" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Arrangement Type</label>
+                            <select class="form-select" name="ArrangementType" required>
+                                <option value="">Select type</option>
+                                <option value="BedAndBreakfast">Night with breakfast</option>
+                                <option value="HalfBoard">Half-board</option>
+                                <option value="FullBoard">Full-board</option>
+                                <option value="AllInclusive">All inclusive</option>
+                                <option value="RentApartment">Rent apartment</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Transport</label>
+                            <select class="form-select" name="Transport" required>
+                                <option value="">Select transport</option>
+                                <option value="Bus">Bus</option>
+                                <option value="Airplane">Plane</option>
+                                <option value="BusAndAirplane">Bus and plane</option>
+                                <option value="Individual">Individual</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" name="Location" placeholder="Enter the location" required/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Max Passengers</label>
+                            <input type="number" class="form-control" name="MaxPassengers" placeholder="Enter number of max passenger" required/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="ArrangementDescription" rows="3" placeholder="Enter the description" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Travel Program</label>
+                            <textarea class="form-control" name="TravelProgram" rows="6" placeholder="Enter the travel program" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Arrangement Picture</label>
+                            <input type="file" class="form-control mb-2" name="ArrangementPicturePath" onchange="previewImage(event)" required/>
+                            <img id="previewImg" alt="Preview" class="img-fluid" style="max-height:250px; object-fit:cover; margin-top:10px;" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" class="form-control" name="TravelStartDate" required/>
+                            </div>
+                            <div class="col mb-3">
+                                <label class="form-label">End Date</label>
+                                <input type="date" class="form-control" name="TravelEndDate" required/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Accommodation -->
+        <div class="card shadow mb-4" style="max-width: 900px; margin:auto;">
+            <div class="card-header text-center">
+                <h3>Add Accommodation</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3 text-center">
+                    <label class="form-label fw-bold">Name</label>
+                    <input type="text" class="form-control mx-auto" style="max-width: 200px;" name="AccommodationName" placeholder="Enter the name" required/>
+                </div>
+                <div class="mb-3 text-center">
+                    <label class="form-label fw-bold">Number of Stars</label>
+                    <input type="number" class="form-control mx-auto" style="max-width: 200px;" name="NumberOfStars" min="1" max="5" placeholder="Enter number of stars" required/>
+                </div>
+                <div class="mb-3 text-center">
+                    <label class="form-label fw-bold">Accommodation Type</label>
+                    <select class="form-select mx-auto" style="max-width: 200px;" name="AccommodationType" required>
+                        <option value="">Select type</option>
+                        <option value="Hotel">Hotel</option>
+                        <option value="Motel">Motel</option>
+                        <option value="Villa">Villa</option>
+                    </select>
+                </div>
+                <div class="mb-3 d-flex justify-content-center flex-wrap gap-4">
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" name="PoolExistence" value="true" />
+                        <label class="form-check-label">Pool</label>
+                    </div>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" name="SpaCentreExistence" value="true" />
+                        <label class="form-check-label">Spa Centre</label>
+                    </div>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" name="PeopleWDisabilities" value="true" />
+                        <label class="form-check-label">Accessible</label>
+                    </div>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" name="WiFi" value="true" />
+                        <label class="form-check-label">WiFi</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Accommodation Unit -->
+        <div class="card shadow mb-4" style="max-width: 900px; margin:auto;">
+            <div class="card-header text-center">
+                <h3>Add Accommodation Unit</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3 text-center">
+                    <label class="form-label fw-bold">Max Guests</label>
+                    <input type="number" class="form-control mx-auto" style="max-width: 200px;" name="MaxGuests" placeholder="Enter max guests" required/>
+                </div>
+                <div class="mb-3 text-center">
+                    <div class="form-check d-inline-block me-3">
+                        <input class="form-check-input" type="checkbox" name="PetsAllowed" value="true" />
+                        <label class="form-check-label">Pets Allowed</label>
+                    </div>
+                </div>
+                <div class="mb-3 text-center">
+                    <label class="form-label fw-bold">Price</label>
+                    <input type="number" class="form-control mx-auto" style="max-width: 200px;" name="Price" step="0.01" placeholder="Enter the price" required/>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center gap-2 mt-4">
+            <button type="submit" class="btn btn-primary px-5">Create</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            document.getElementById('previewImg').src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+<script>
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+    })();
+</script>

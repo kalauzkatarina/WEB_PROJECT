@@ -1,0 +1,88 @@
+﻿@model List<web_project.Models.Reservation>
+@{
+    var user = Session["user"] as web_project.Models.User;
+    var arrangements = ViewBag.Arrangements as List<web_project.Models.Arrangement>;
+    ViewBag.Title = "My Reservations";
+}
+
+<h2>My Reservations</h2>
+
+@if (TempData["CancelMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["CancelMessage"]
+    </div>
+}
+
+<form method="get" action="@Url.Action("Index", "Reservation")" class="row g-2 mb-3 mt-3 d-flex">
+    <div class="d-flex mb-3 mt-3">
+        <input type="text" name="search" value="@ViewBag.Search"
+               class="form-control me-2"
+               style="max-width: 400px;"
+               placeholder="Search by ID, arrangement or status" />
+
+        <select name="sortBy" class="form-select me-2" style="width: 180px;">
+            <option value="">Sort by</option>
+            <option value="arrangement" @(ViewBag.SortBy == "arrangement" ? "selected" : "")>Arrangement name</option>
+        </select>
+
+        <select name="sortOrder" class="form-select me-2" style="width: 150px;">
+            <option value="asc" @(ViewBag.SortOrder == "asc" ? "selected" : "")>Ascending</option>
+            <option value="desc" @(ViewBag.SortOrder == "desc" ? "selected" : "")>Descending</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary me-2">Search</button>
+        <a href="@Url.Action("Index", "Reservation")" class="btn btn-secondary">Reset</a>
+    </div>
+</form>
+
+
+@if (Model == null || !Model.Any(x => x.TouristId == user.Id))
+{
+    <p class="text-muted">You don’t have any reservations at the moment.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var r in Model.Where(x => x.TouristId == user.Id))
+        {
+            var arrangementName = arrangements?.FirstOrDefault(a => a.Id == r.ArrangementId)?.Name ?? "Unknown";
+
+            <div class="col-md-4 mb-4 mt-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-3">@arrangementName</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <strong>Reservation ID:</strong>
+                                <span>@r.Id</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <strong>Unit:</strong>
+                                <span>@r.SelectedUnitId</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <strong>Status:</strong>
+                                <span>@r.Status</span>
+                            </li>
+                            <li class="list-group-item text-center">
+                                @if (r.Status == web_project.Models.Status.Active)
+                                {
+                                    <form action="@Url.Action("CancelTheUnit", "Reservation")" method="post">
+                                        <input type="hidden" name="reservationId" value="@r.Id" />
+                                        <button type="submit" class="btn btn-danger mt-2">Cancel</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No actions</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}

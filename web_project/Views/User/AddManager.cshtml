@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "Add Manager";
+}
+
+<div class="d-flex justify-content-center mt-5">
+    <div style="width: 100%; max-width: 650px;">
+        <div class="card shadow">
+            <h2 class="mb-4 mt-3 text-center">Add Manager</h2>
+            <div class="card-body">
+                @if (ViewBag.DoubleUsernameErrorMessage != null)
+                {
+                    <div class="alert alert-danger text-center">
+                        @ViewBag.DoubleUsernameErrorMessage
+                    </div>
+                }
+
+                <form action="@Url.Action("AddManager", "User")" method="post" class="needs-validation" novalidate>
+                    <div class="mx-5">
+                        <div class="row">
+                            <div class="mb-3 col-6">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+                                <div class="valid-feedback">Perfect!</div>
+                                <div class="invalid-feedback">Username cannot be empty!</div>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                                <div class="valid-feedback">Perfect!</div>
+                                <div class="invalid-feedback">Password cannot be empty!</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="mb-3 col-6">
+                                <label for="firstName" class="form-label">First name</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name" required>
+                                <div class="valid-feedback">Perfect!</div>
+                                <div class="invalid-feedback">First name cannot be empty!</div>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label for="lastName" class="form-label">Last name</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name" required>
+                                <div class="valid-feedback">Perfect!</div>
+                                <div class="invalid-feedback">Last name cannot be empty!</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="mb-3 col-6">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                                <div class="valid-feedback">Perfect!</div>
+                                <div class="invalid-feedback">Email cannot be empty!</div>
+                            </div>
+
+                            <div class="col-4 mt-4 mb-4 pt-3">
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" required>
+                                <label class="form-check-label" for="female">Female</label>
+                            </div>
+                            <div class="col mt-4 mb-4 pt-3">
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked>
+                                <label class="form-check-label" for="male">Male</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-floating mb-3 col-6">
+                                <input type="date" class="form-control" name="date" required />
+                                <label class="mx-2" for="date">Birth date:</label>
+                                <div class="valid-feedback">Perfect!</div>
+                                <div class="invalid-feedback">Birth date cannot be empty!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="d-flex justify-content-center gap-3">
+                            <input class="btn btn-primary col-2" type="submit" value="Add">
+                            <a href="@Url.Action("AllUsers", "User")" class="btn btn-secondary col-2">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        'use strict'
+
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>

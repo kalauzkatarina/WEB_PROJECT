@@ -1,0 +1,34 @@
+[
+  {
+    "Id": 1,
+    "TouristId": 3,
+    "AccommodationId": 2,
+    "CommentText": "Amazing winter experience in Kranjska Gora, hotel was great!",
+    "Rating": 5,
+    "Status": 0
+  },
+  {
+    "Id": 2,
+    "TouristId": 5,
+    "AccommodationId": 2,
+    "CommentText": "Good stay, ski slopes were perfect, breakfast was delicious.",
+    "Rating": 4,
+    "Status": 1
+  },
+  {
+    "Id": 3,
+    "TouristId": 3,
+    "AccommodationId": 2,
+    "CommentText": "uhuhu",
+    "Rating": 4,
+    "Status": 1
+  },
+  {
+    "Id": 4,
+    "TouristId": 3,
+    "AccommodationId": 2,
+    "CommentText": "lepo je bilo",
+    "Rating": 3,
+    "Status": 2
+  }
+]

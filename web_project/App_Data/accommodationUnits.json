@@ -1,0 +1,51 @@
+[
+  {
+    "Id": 1,
+    "MaxGuests": 2,
+    "PetsAllowed": false,
+    "Price": 120,
+    "LogicDelete": false
+  },
+  {
+    "Id": 2,
+    "MaxGuests": 4,
+    "PetsAllowed": true,
+    "Price": 200,
+    "LogicDelete": false
+  },
+  {
+    "Id": 3,
+    "MaxGuests": 2,
+    "PetsAllowed": true,
+    "Price": 90,
+    "LogicDelete": false
+  },
+  {
+    "Id": 4,
+    "MaxGuests": 3,
+    "PetsAllowed": false,
+    "Price": 140,
+    "LogicDelete": false
+  },
+  {
+    "Id": 5,
+    "MaxGuests": 2,
+    "PetsAllowed": false,
+    "Price": 180,
+    "LogicDelete": false
+  },
+  {
+    "Id": 6,
+    "MaxGuests": 4,
+    "PetsAllowed": true,
+    "Price": 250,
+    "LogicDelete": false
+  },
+  {
+    "Id": 7,
+    "MaxGuests": 3,
+    "PetsAllowed": true,
+    "Price": 85,
+    "LogicDelete": false
+  }
+]

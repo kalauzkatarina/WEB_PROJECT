@@ -1,0 +1,50 @@
+[
+  {
+    "Id": 1,
+    "Name": "Spring in Tuscany",
+    "ArrangementType": 2,
+    "Transport": 2,
+    "Location": "Firenze, Italy",
+    "TravelStartDate": "03/03/2026",
+    "TravelEndDate": "09/03/2026",
+    "MaxPassengers": 55,
+    "ArrangementDescription": "A 6-day trip to Italy with excursions and full service.",
+    "TravelProgram": "Day 1: Arrival, Day 2: Pisa, Lucca, Day 3: Cinque Terre, Day 4: San Gimignano, Sienna, Day 5: Firenze, Day 6: Return",
+    "ArrangementPicturePath": "~/Content/Images/Arrangements/tuscany.jpg",
+    "AccommodationId": 1,
+    "ManagerId": 2,
+    "LogicDelete": false
+  },
+  {
+    "Id": 2,
+    "Name": "Winter Magic in Slovenia",
+    "ArrangementType": 1,
+    "Transport": 0,
+    "Location": "Kranjska Gora, Slovenia",
+    "TravelStartDate": "20/01/2025",
+    "TravelEndDate": "27/01/2025",
+    "MaxPassengers": 50,
+    "ArrangementDescription": "A 7-day ski package in Kranjska Gora with ski-pass and half-board service.",
+    "TravelProgram": "Day 1: Arrival and hotel check-in, Day 2-6: Skiing and excursions(Bled, Ljubljana), Day 7: Return",
+    "ArrangementPicturePath": "~/Content/images/Arrangements/slovenia.jpg",
+    "AccommodationId": 2,
+    "ManagerId": 4,
+    "LogicDelete": false
+  },
+  {
+    "Id": 3,
+    "Name": "Summer Escape to Malta",
+    "ArrangementType": 2,
+    "Transport": 1,
+    "Location": "Valletta, Malta",
+    "TravelStartDate": "05/08/2026",
+    "TravelEndDate": "12/05/2026",
+    "MaxPassengers": 45,
+    "ArrangementDescription": "Discover the beauty of Malta with a full-board arrangement including excursions to historical sites and beaches.",
+    "TravelProgram": "Day 1: Arrival and welcome dinner, Day 2: Valletta city tour, Day 3: Mdina and Rabat, Day 4: Gozo Island, Day 5: Beach day, Day 6: Free exploration, Day 7: Return",
+    "ArrangementPicturePath": "~/Content/images/Arrangements/malta.jpg",
+    "AccommodationId": 3,
+    "ManagerId": 8,
+    "LogicDelete": false
+  }
+]

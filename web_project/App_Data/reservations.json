@@ -1,0 +1,44 @@
+[
+  {
+    "Id": 1,
+    "TouristId": 3,
+    "Status": 0,
+    "ArrangementId": 2,
+    "SelectedUnitId": 4
+  },
+  {
+    "Id": 2,
+    "TouristId": 5,
+    "Status": 1,
+    "ArrangementId": 2,
+    "SelectedUnitId": 5
+  },
+  {
+    "Id": 3,
+    "TouristId": 6,
+    "Status": 0,
+    "ArrangementId": 3,
+    "SelectedUnitId": 6
+  },
+  {
+    "Id": 4,
+    "TouristId": 7,
+    "Status": 0,
+    "ArrangementId": 1,
+    "SelectedUnitId": 1
+  },
+  {
+    "Id": 5,
+    "TouristId": 3,
+    "Status": 1,
+    "ArrangementId": 3,
+    "SelectedUnitId": 3
+  },
+  {
+    "Id": 6,
+    "TouristId": 7,
+    "Status": 1,
+    "ArrangementId": 1,
+    "SelectedUnitId": 2
+  }
+]

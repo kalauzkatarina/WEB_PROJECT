@@ -1,0 +1,558 @@
+﻿@model web_project.Models.Arrangement
+@{
+    ViewBag.Title = Model.Name;
+    var accommodation = ViewBag.Accomodation as web_project.Models.Accommodation;
+    var accomodationUnits = ViewBag.AccommodationUnits as List<web_project.Models.AccommodationUnit>;
+    var comments = ViewBag.Comments as List<web_project.Models.Comment>;
+    var users = ViewBag.CommentUsers as List<web_project.Models.User>;
+    var reservations = ViewBag.Reservations as List<web_project.Models.Reservation>;
+    var user = Session["user"] as web_project.Models.User;
+    bool isManager = user != null && user.Role == web_project.Models.UserRole.Manager;
+    bool isOwner = isManager && Model.ManagerId == user.Id;
+}
+
+@if (TempData["DeleteError"] != null)
+{
+    <div class="alert alert-danger text-center">
+        @TempData["DeleteError"]
+    </div>
+}
+
+
+@if (TempData["EditError"] != null)
+{
+    <div class="alert alert-danger text-center">
+        @TempData["EditError"]
+    </div>
+}
+
+
+<div class="card mb-3 shadow" style="max-width: 1500px;">
+    <div class="row g-0">
+
+        <div class="col-md-4 d-flex align-items-center">
+            <img src="@Url.Content(Model.ArrangementPicturePath)"
+                 alt="@Model.Name"
+                 class="img-fluid rounded-start"
+                 style="object-fit: cover; width: 100%; height: 100%;" />
+        </div>
+
+        <div class="col-md-8">
+            <div class="card-body">
+                <h4 class="card-title mb-4 fs-2 text-center">@Model.Name</h4>
+
+                <ul class="list-group list-group-flush text-start">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 fw-bold">Type:</div>
+                            <div class="col-8">
+                                @{
+                                    var displayArrangementType = "";
+                                    switch (Model.ArrangementType)
+                                    {
+                                        case web_project.Models.ArrangementType.BedAndBreakfast:
+                                            displayArrangementType = "Night with breakfast";
+                                            break;
+                                        case web_project.Models.ArrangementType.HalfBoard:
+                                            displayArrangementType = "Half-board";
+                                            break;
+                                        case web_project.Models.ArrangementType.FullBoard:
+                                            displayArrangementType = "Full-board";
+                                            break;
+                                        case web_project.Models.ArrangementType.AllInclusive:
+                                            displayArrangementType = "All inclusive";
+                                            break;
+                                        case web_project.Models.ArrangementType.RentApartment:
+                                            displayArrangementType = "Rent apartment";
+                                            break;
+                                    }
+                                }
+                                @displayArrangementType
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 fw-bold">Transport:</div>
+                            <div class="col-8">
+                                @{
+                                    var displayTransportType = "";
+                                    switch (Model.Transport)
+                                    {
+                                        case web_project.Models.TransportType.Bus:
+                                            displayTransportType = "Bus";
+                                            break;
+                                        case web_project.Models.TransportType.BusAndAirplane:
+                                            displayTransportType = "Bus and plane";
+                                            break;
+                                        case web_project.Models.TransportType.Airplane:
+                                            displayTransportType = "Plane";
+                                            break;
+                                        case web_project.Models.TransportType.Individual:
+                                            displayTransportType = "Individual";
+                                            break;
+                                        case web_project.Models.TransportType.Other:
+                                            displayTransportType = "Other";
+                                            break;
+                                    }
+                                }
+                                @displayTransportType
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 fw-bold">Location:</div>
+                            <div class="col-8">
+                                <div class="col-8">
+                                    @Model.Location
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 fw-bold">Start:</div>
+                            <div class="col-8">@Model.TravelStartDate</div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 fw-bold">End:</div>
+                            <div class="col-8">@Model.TravelEndDate</div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 fw-bold">Max passengers:</div>
+                            <div class="col-8">@Model.MaxPassengers</div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 fw-bold">Description:</div>
+                            <div class="col-8">@Model.ArrangementDescription</div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 fw-bold">Travel Program:</div>
+                            <div class="col-8">@Model.TravelProgram</div>
+                        </div>
+                    </li>
+                </ul>
+
+                @if (isOwner)
+                {
+                    <div class="mb-3 d-flex gap-2 justify-content-center mt-2">
+                        <a href="@Url.Action("EditArrangement", "Arrangement", new { id = Model.Id })" class="btn btn-primary">Edit</a>
+                        <form action="@Url.Action("DeleteArrangement", "Arrangement", new { id = Model.Id })" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this arrangement?');">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="card mb-3 shadow" style="max-width: 1500px;">
+    <div class="row g-0">
+
+        <div class="card-header">
+            <h3 class="mb-0">Accommodation</h3>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card-body">
+                @if (accommodation != null)
+                {
+                    <div class="row text-start">
+                        <div class="col-md-3 mb-2">
+                            <strong>Name:</strong> @accommodation.Name
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <strong>Type:</strong> @accommodation.AccommodationType
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <strong>Stars:</strong> @accommodation.NumberOfStars
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <strong>Pool:</strong> @(accommodation.PoolExistence ? "Yes" : "No")
+                        </div>
+                    </div>
+
+                    <div class="row text-start">
+                        <div class="col-md-3 mb-2">
+                            <strong>Spa Center:</strong> @(accommodation.SpaCentreExistence ? "Yes" : "No")
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <strong>Accessible:</strong> @(accommodation.PeopleWDisabilities ? "Yes" : "No")
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <strong>Wifi:</strong> @(accommodation.WiFi ? "Yes" : "No")
+                        </div>
+                    </div>
+
+                    if (isOwner && accommodation != null)
+                    {
+                        <div class="mb-3 d-flex gap-2 justify-content-center mt-2">
+                            <a href="@Url.Action("EditAccommodation", "Accommodation", new { accommodationId = accommodation.Id, arrangementId = Model.Id })" class="btn btn-primary">Edit</a>
+
+                            <form action="@Url.Action("DeleteAccommodation", "Accommodation")" method="post" style="display:inline;">
+                                <input type="hidden" name="accommodationId" value="@accommodation.Id" />
+                                <input type="hidden" name="arrangementId" value="@Model.Id" />
+
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this accommodation?');">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No accommodation info available.</p>
+                }
+
+                @{
+                    bool canAddAccommodation = false;
+
+                    if (user != null && user.Role == web_project.Models.UserRole.Manager)
+                    {
+                        var arrangement = Model;
+
+                        if (arrangement != null
+                             && arrangement.ManagerId == user.Id
+                             && accommodation == null) // znači nema povezanog smeštaja
+                        {
+                            canAddAccommodation = true;
+                        }
+                    }
+                }
+
+                @if (canAddAccommodation)
+                {
+                    <a href="@Url.Action("AddAccommodation", "Accommodation", new { arrangementId = Model.Id })"
+                       class="btn btn-primary mt-3">Add Accommodation</a>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<hr />
+
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h3 class="mb-0">Accommodation Units</h3>
+    </div>
+
+    <div class="card-body">
+        <form action="@Url.Action("Details", "Home")" method="get">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Min guests</label>
+                    <input type="number" class="form-control" name="minGuests" value="@ViewBag.MinGuests" placeholder="0" />
+                </div>
+                <div class="col">
+                    <label>Max guests</label>
+                    <input type="number" class="form-control" name="maxGuests" value="@ViewBag.MaxGuests" placeholder="0" />
+                </div>
+                <div class="col">
+                    <label>Pets allowed</label>
+                    <select class="form-select" name="petAllowed">
+                        <option value="">Any</option>
+                        <option value="true" @(ViewBag.PetAllowed == true ? "selected" : "")>Yes</option>
+                        <option value="false" @(ViewBag.PetAllowed == false ? "selected" : "")>No</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Min price</label>
+                    <input type="number" class="form-control" name="minPrice" value="@ViewBag.MinPrice" placeholder="0" />
+                </div>
+                <div class="col">
+                    <label>Max price</label>
+                    <input type="number" class="form-control" name="maxPrice" value="@ViewBag.MaxPrice" placeholder="0" />
+                </div>
+                <div class="col">
+                    <label>Sort by</label>
+                    <select class="form-select" name="sortByAccommodationUnit">
+                        <option value="">--</option>
+                        <option value="guests" @(ViewBag.SortByAccommodationUnit == "guests" ? "selected" : "")>Guests</option>
+                        <option value="price" @(ViewBag.SortByAccommodationUnit == "price" ? "selected" : "")>Price</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Sort order</label>
+                    <select name="sortOrderAccommodationUnit" class="form-select">
+                        <option value="asc" @(ViewBag.SortOrderAccommodationUnit == "asc" ? "selected" : "")>Ascending</option>
+                        <option value="desc" @(ViewBag.SortOrderAccommodationUnit == "desc" ? "selected" : "")>Descending</option>
+                    </select>
+                </div>
+                <div class="col mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <a href="@Url.Action("Details", "Home")" class="btn btn-secondary">Reset</a>
+                </div>
+            </div>
+        </form>
+
+        @{
+            bool userIsLoggedIn = user != null;
+            bool userIsTourist = user != null && user.Role.Equals(web_project.Models.UserRole.Tourist);
+
+            DateTime travelEnd;
+            bool travelEnded = false;
+            if (DateTime.TryParseExact(Model.TravelEndDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out travelEnd))
+            {
+                travelEnded = travelEnd < DateTime.Now;
+            }
+
+
+            reservations = reservations ?? new List<web_project.Models.Reservation>();
+        }
+
+        @if (accomodationUnits != null && accomodationUnits.Count > 0)
+        {
+            <div class="row ">
+                @foreach (var unit in accomodationUnits)
+                {
+
+                    <div class="col-md-3 d-flex">
+                        <div class="card shadow-sm" style="width: 100%; max-width: 350px;">
+                            <div class="card-bodyd-flex flex-column justify-content-between align-items-center">
+                                <h5 class="card-header text-center">Unit @unit.Id</h5>
+                                <ul class="list-group list-group-flush text-start">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-7 fw-bold">Max Guests:</div>
+                                            <div class="col-5">@unit.MaxGuests</div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-7 fw-bold">Pets Allowed:</div>
+                                            <div class="col-5">@((unit.PetsAllowed) ? "Yes" : "No")</div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-7 fw-bold">Price:</div>
+                                            <div class="col-5">$@unit.Price</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="d-flex justify-content-center w-100 mt-2 mb-3">
+
+                                    @if (!userIsTourist || !userIsLoggedIn)
+                                    {
+                                        <button class="btn btn-secondary" disabled>Only tourists can reserve</button>
+                                    }
+                                    else if (travelEnded)
+                                    {
+                                        <button class="btn btn-secondary" disabled>Past arrangement</button>
+                                    }
+                                    else if (reservations.Any(r => r.SelectedUnitId == unit.Id && r.Status == web_project.Models.Status.Active))
+                                    {
+                                        <button class="btn btn-danger" disabled>Reserved</button>
+                                    }
+                                    else
+                                    {
+                                        <form action="@Url.Action("ReserveTheUnit", "Reservation")" method="post" style="display:inline;">
+                                            <input type="hidden" name="accommodationUnitId" value="@unit.Id" />
+                                            <input type="hidden" name="arrangementId" value="@Model.Id" />
+                                            <button type="submit" class="btn btn-primary">Reserve</button>
+                                        </form>
+                                    }
+                                </div>
+
+                                @if (isOwner)
+                                {
+                                    <div class="d-flex justify-content-center w-100 mb-3 gap-2">
+                                        <a href="@Url.Action("EditAccommodationUnit", "AccommodationUnit", new { accommodationUnitId = unit.Id, arrangementId = Model.Id })" class="btn btn-primary">Edit</a>
+
+                                        <form action="@Url.Action("DeleteAccommodationUnit", "AccommodationUnit")" method="post" style="display:inline;">
+                                            <input type="hidden" name="accommodationUnitId" value="@unit.Id" />
+                                            <input type="hidden" name="arrangementId" value="@Model.Id" />
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this unit?');">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">No accommodation units for this arrangement.</p>
+        }
+
+        @if (isOwner)
+        {
+            <div class="text-center mb-4 mt-3">
+                @if (ViewBag.CanAddUnits)
+                {
+                    <a href="@Url.Action("AddAccommodationUnit", "AccommodationUnit", new { arrangementId = Model.Id })"
+                       class="btn btn-primary">
+                        Add Unit
+                    </a>
+                }
+            </div>
+        }
+
+    </div>
+</div>
+
+
+<hr />
+<div class="card mt-4 shadow" style="max-width: 800px; margin:auto;">
+    <div class="card-header">
+        <h3 class="mb-0">Comments</h3>
+    </div>
+    <div class="card-body">
+        @{
+            var userLogged = Session["user"] as web_project.Models.User;
+
+            var displayComments = new List<web_project.Models.Comment>();
+            if (isManager)
+            {
+                if(Model.ManagerId == userLogged.Id)
+                {
+                    //ako je to taj menadzer koji je kreirao aranzman, onda on vidi sve 
+                    displayComments = comments ?? new List<web_project.Models.Comment>();
+                } else
+                {
+                    displayComments = (comments ?? new List<web_project.Models.Comment>())
+                                      .Where(c => c.Status == web_project.Models.CommentStatus.Approved)
+                                      .ToList();
+                }
+
+            }
+            else
+            {
+                //turista vidi sa odobrene komentare
+                displayComments = (comments ?? new List<web_project.Models.Comment>())
+                                  .Where(c => c.Status == web_project.Models.CommentStatus.Approved)
+                                  .ToList();
+            }
+        }
+
+        @if (displayComments.Count > 0)
+        {
+            for (int i = 0; i < displayComments.Count; i++)
+            {
+                var comment = displayComments[i];
+                var commentingUser = users.FirstOrDefault(u => u.Id == comment.TouristId);
+
+                <div class="mb-3 p-2 border rounded">
+                    <p><strong>@commentingUser.FirstName @commentingUser.LastName</strong> rated: @comment.Rating / 5</p>
+                    <p>@comment.CommentText</p>
+
+                    @if (isManager)
+                    {
+                        <p><strong>Status:</strong> @comment.Status</p>
+
+                        if (comment.Status == web_project.Models.CommentStatus.Pending)
+                        {
+                            <form action="@Url.Action("Approve", "Comment")" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@comment.Id" />
+                                <button class="btn btn-success btn-sm">Approve</button>
+                            </form>
+                            <form action="@Url.Action("Reject", "Comment")" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@comment.Id" />
+                                <button class="btn btn-danger btn-sm">Reject</button>
+                            </form>
+                        }
+                    }
+
+                    <hr />
+                </div>
+            }
+        }
+        else
+        {
+            <p>No comments yet for this arrangement.</p>
+        }
+
+        @if (userLogged != null && userLogged.Role == web_project.Models.UserRole.Tourist)
+        {
+
+            bool hasReservation = reservations.Any(r =>
+                r.TouristId == userLogged.Id &&
+                r.ArrangementId == Model.Id &&
+                r.Status == web_project.Models.Status.Active
+            );
+
+            if (Model.TravelEndDate.AsDateTime() < DateTime.Now && hasReservation)
+            {
+                <hr />
+                <h4>Leave a Comment</h4>
+                <form action="@Url.Action("AddComment", "Comment")" method="post" class="needs-validation" novalidate>
+                    <input type="hidden" name="AccommodationId" value="@accommodation.Id" />
+
+                    <div class="mb-3">
+                        <label for="CommentText" class="form-label">Your Comment</label>
+                        <textarea name="CommentText" class="form-control" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Rating" class="form-label">Rating</label>
+                        <select name="Rating" class="form-select" required>
+                            <option value="">-- Select --</option>
+                            <option value="1">1 - Very bad</option>
+                            <option value="2">2 - Bad</option>
+                            <option value="3">3 - Average</option>
+                            <option value="4">4 - Good</option>
+                            <option value="5">5 - Excellent</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                </form>
+            }
+        }
+    </div>
+</div>
+
+
+<script>
+    (function () {
+        'use strict'
+
+        var forms = document.querySelectorAll('.needs-validation')
+
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>

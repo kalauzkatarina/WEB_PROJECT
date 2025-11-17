@@ -1,0 +1,129 @@
+[
+  {
+    "Id": 1,
+    "Username": "katarina",
+    "Password": "123456",
+    "FirstName": "Katarina",
+    "LastName": "Kalauz",
+    "Gender": 0,
+    "Email": "kalauz@gmail.com",
+    "Date": "02/06/2003",
+    "Role": 0,
+    "Reservations": [],
+    "Arrangements": [],
+    "LoggedIn": false
+  },
+  {
+    "Id": 2,
+    "Username": "jelena",
+    "Password": "789",
+    "FirstName": "Jelena",
+    "LastName": "Jelenkovic",
+    "Gender": 0,
+    "Email": "jelena@gmail.com",
+    "Date": "15/08/2002",
+    "Role": 1,
+    "Reservations": [],
+    "Arrangements": [
+      1
+    ],
+    "LoggedIn": true
+  },
+  {
+    "Id": 3,
+    "Username": "branislav",
+    "Password": "456",
+    "FirstName": "Branislav",
+    "LastName": "Brankovic",
+    "Gender": 1,
+    "Email": "branko@gmail.com",
+    "Date": "22/09/1995",
+    "Role": 2,
+    "Reservations": [
+      1,
+      5
+    ],
+    "Arrangements": [],
+    "LoggedIn": true
+  },
+  {
+    "Id": 4,
+    "Username": "marija",
+    "Password": "marija123",
+    "FirstName": "Marija",
+    "LastName": "Marijic",
+    "Gender": 0,
+    "Email": "marija@gmail.com",
+    "Date": "10/07/1998",
+    "Role": 1,
+    "Reservations": [],
+    "Arrangements": [
+      2
+    ],
+    "LoggedIn": true
+  },
+  {
+    "Id": 5,
+    "Username": "nikola",
+    "Password": "nikola321",
+    "FirstName": "Nikola",
+    "LastName": "Nikolic",
+    "Gender": 1,
+    "Email": "nikola@gmail.com",
+    "Date": "05/06/2000",
+    "Role": 2,
+    "Reservations": [
+      2
+    ],
+    "Arrangements": [],
+    "LoggedIn": false
+  },
+  {
+    "Id": 6,
+    "Username": "ivana",
+    "Password": "ivana789",
+    "FirstName": "Ivana",
+    "LastName": "Ivanovic",
+    "Gender": 0,
+    "Email": "ivana@gmail.com",
+    "Date": "15/05/1989",
+    "Role": 2,
+    "Reservations": [
+      3
+    ],
+    "Arrangements": [],
+    "LoggedIn": false
+  },
+  {
+    "Id": 7,
+    "Username": "petar",
+    "Password": "petar456",
+    "FirstName": "Petar",
+    "LastName": "Petrovic",
+    "Gender": 1,
+    "Email": "petar@gmail.com",
+    "Date": "01/04/1999",
+    "Role": 2,
+    "Reservations": [
+      4
+    ],
+    "Arrangements": [],
+    "LoggedIn": false
+  },
+  {
+    "Id": 8,
+    "Username": "ana",
+    "Password": "ana555",
+    "FirstName": "Ana",
+    "LastName": "Jovanovic",
+    "Gender": 0,
+    "Email": "ana@gmail.com",
+    "Date": "20/03/2005",
+    "Role": 1,
+    "Reservations": [],
+    "Arrangements": [
+      3
+    ],
+    "LoggedIn": false
+  }
+]

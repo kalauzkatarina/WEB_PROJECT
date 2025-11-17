@@ -1,0 +1,123 @@
+﻿@model web_project.Models.Arrangement
+@{
+    ViewBag.Title = "Edit Arrangement";
+    var user = Session["user"] as web_project.Models.User;
+    bool isOwner = user != null && user.Role == web_project.Models.UserRole.Manager && Model.ManagerId == user.Id;
+}
+<div class="card shadow mb-4" style="max-width: 900px; margin:auto;">
+    <div class="card-header text-center">
+        <h3>@Model.Name</h3>
+    </div>
+    <div class="card-body">
+        <form action="@Url.Action("EditArrangement", "Arrangement", Model)" method="post" enctype="multipart/form-data"  class="needs-validation" novalidate>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="Name" value="@Model.Name" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Arrangement Type</label>
+                        <select class="form-select" name="ArrangementType" required>
+                            <option value="BedAndBreakfast" @(Model.ArrangementType == web_project.Models.ArrangementType.BedAndBreakfast ? "selected" : "")>Night with breakfast</option>
+                            <option value="HalfBoard" @(Model.ArrangementType == web_project.Models.ArrangementType.HalfBoard ? "selected" : "")>Half-board</option>
+                            <option value="FullBoard" @(Model.ArrangementType == web_project.Models.ArrangementType.FullBoard ? "selected" : "")>Full-board</option>
+                            <option value="AllInclusive" @(Model.ArrangementType == web_project.Models.ArrangementType.AllInclusive ? "selected" : "")>All inclusive</option>
+                            <option value="RentApartment" @(Model.ArrangementType == web_project.Models.ArrangementType.RentApartment ? "selected" : "")>Rent apartment</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Transport</label>
+                        <select class="form-select" name="Transport" required>
+                            <option value="Bus" @(Model.Transport == web_project.Models.TransportType.Bus ? "selected" : "")>Bus</option>
+                            <option value="Airplane" @(Model.Transport == web_project.Models.TransportType.Airplane ? "selected" : "")>Plane</option>
+                            <option value="BusAndAirplane" @(Model.Transport == web_project.Models.TransportType.BusAndAirplane ? "selected" : "")>Bus and plane</option>
+                            <option value="Individual" @(Model.Transport == web_project.Models.TransportType.Individual ? "selected" : "")>Individual</option>
+                            <option value="Other" @(Model.Transport == web_project.Models.TransportType.Other ? "selected" : "")>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" name="Location" value="@Model.Location" required/>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Max Passengers</label>
+                        <input type="number" class="form-control" name="MaxPassengers" value="@Model.MaxPassengers" required/>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="ArrangementDescription" rows="3" required>@Model.ArrangementDescription</textarea>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Travel Program</label>
+                        <textarea class="form-control" name="TravelProgram" rows="6" required>@Model.TravelProgram</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Arrangement Picture</label>
+                        <input type="file" class="form-control mb-2" name="ArrangementPicturePath" onchange="previewImage(event)" required/>
+                        <img id="previewImg" src="@Url.Content(Model.ArrangementPicturePath)" alt="Current Image" class="img-fluid" style="max-height:250px; object-fit:cover; margin-top:10px;" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control" name="TravelStartDate"
+                                   value="@(Model.TravelStartDate != null ? DateTime.ParseExact(Model.TravelStartDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") : "")"
+                                   required />
+                        </div>
+                        <div class="col mb-3">
+                            <label class="form-label">End Date</label>
+                            <input type="date" class="form-control" name="TravelEndDate"
+                                   value="@(Model.TravelEndDate != null ? DateTime.ParseExact(Model.TravelEndDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") : "")"
+                                   required />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="@Url.Action("Details", "Home", new { id = Model.Id })" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            document.getElementById('previewImg').src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+
+<script>
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+    })();
+</script>

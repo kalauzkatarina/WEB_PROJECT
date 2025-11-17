@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 1,
+    "AccommodationType": 0,
+    "Name": "Hotel Firenze",
+    "NumberOfStars": 5,
+    "PoolExistence": false,
+    "SpaCentreExistence": false,
+    "PeopleWDisabilities": true,
+    "WiFi": true,
+    "AccommodationUnits": [
+      1,
+      2
+    ],
+    "LogicDelete": false
+  },
+  {
+    "Id": 2,
+    "AccommodationType": 0,
+    "Name": "Alpine Resort Kranjska Gora",
+    "NumberOfStars": 3,
+    "PoolExistence": true,
+    "SpaCentreExistence": false,
+    "PeopleWDisabilities": true,
+    "WiFi": true,
+    "AccommodationUnits": [
+      3,
+      4
+    ],
+    "LogicDelete": false
+  },
+  {
+    "Id": 3,
+    "AccommodationType": 1,
+    "Name": "Seaside Motel Malta",
+    "NumberOfStars": 5,
+    "PoolExistence": true,
+    "SpaCentreExistence": true,
+    "PeopleWDisabilities": true,
+    "WiFi": true,
+    "AccommodationUnits": [
+      5,
+      6
+    ],
+    "LogicDelete": false
+  }
+]

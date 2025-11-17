@@ -1,0 +1,243 @@
+﻿@model IEnumerable<web_project.Models.Arrangement>
+
+@{
+    ViewBag.Title = "Home Page";
+    var user = ViewBag.LoggedUser as web_project.Models.User;
+    bool isManager = user != null && user.Role == web_project.Models.UserRole.Manager;
+}
+
+<main class="shadow-lg">
+
+    <div class="p-5 mb-4 text-center text-white"
+         style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Content/images/Home/perfect.jpg') no-repeat center 68%/cover; position:relative; min-height: 160px">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <h1 class="display-4 fw-bold">Kalauz Tours</h1>
+            <p class="lead fw-normal">Discover your next adventure</p>
+        </div>
+    </div>
+    <div>
+        <form method="get" action="@Url.Action("Index", "Home")">
+            <div class="row gap-4">
+                <div class="input-group flex-nowrap col">
+                    <input type="text" class="form-control" placeholder="Name" name="name" aria-label="Username" aria-describedby="addon-wrapping" value="@ViewBag.Name">
+                </div>
+                <div class="col">
+                    <select name="transportType" class="form-select">
+                        <option value="">All</option>
+                        @foreach (var t in Enum.GetValues(typeof(web_project.Models.TransportType)))
+                        {
+                            string display = "";
+
+                            switch ((web_project.Models.TransportType)t)
+                            {
+                                case web_project.Models.TransportType.Bus:
+                                    {
+                                        display = "Bus";
+                                        break;
+                                    }
+                                case web_project.Models.TransportType.Airplane:
+                                    {
+                                        display = "Plane";
+                                        break;
+                                    }
+                                case web_project.Models.TransportType.BusAndAirplane:
+                                    {
+                                        display = "Bus and plane";
+                                        break;
+                                    }
+                                case web_project.Models.TransportType.Individual:
+                                    {
+                                        display = "Individual";
+                                        break;
+                                    }
+                                case web_project.Models.TransportType.Other:
+                                    {
+                                        display = "Other";
+                                        break;
+                                    }
+                            }
+
+                            <option value="@t" @(ViewBag.TransportType == t.ToString() ? "selected" : "")>
+                                @display
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col">
+                    <select name="arrangementType" class="form-select">
+                        <option value="">All</option>
+                        @foreach (var type in Enum.GetValues(typeof(web_project.Models.ArrangementType)))
+                        {
+                            var displayArrangementType = "";
+
+                            switch ((web_project.Models.ArrangementType)type)
+                            {
+                                case web_project.Models.ArrangementType.BedAndBreakfast:
+                                    {
+                                        displayArrangementType = "Night with breakfast";
+                                        break;
+                                    }
+                                case web_project.Models.ArrangementType.HalfBoard:
+                                    {
+                                        displayArrangementType = "Half-board";
+                                        break;
+                                    }
+                                case web_project.Models.ArrangementType.FullBoard:
+                                    {
+                                        displayArrangementType = "Full-board";
+                                        break;
+                                    }
+                                case web_project.Models.ArrangementType.AllInclusive:
+                                    {
+                                        displayArrangementType = "All inclusive";
+                                        break;
+                                    }
+                                case web_project.Models.ArrangementType.RentApartment:
+                                    {
+                                        displayArrangementType = "Rent apartment";
+                                        break;
+                                    }
+                            }
+
+                            <option value="@type" @(ViewBag.ArrangementType == type.ToString() ? "selected" : "")>
+                                @displayArrangementType
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col">
+                    <select name="sortBy" class="form-select">
+                        <option value="">Sort by</option>
+                        <option value="Name" @(ViewBag.SortBy == "Name" ? "selected" : "")>Name</option>
+                        <option value="TravelStartDate" @(ViewBag.SortBy == "TravelStartDate" ? "selected" : "")>Start Date</option>
+                        <option value="TravelEndDate" @(ViewBag.SortBy == "TravelEndDate" ? "selected" : "")>End Date</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <select name="sortOrder" class="form-select">
+                        <option value="asc" @(ViewBag.SortOrder == "asc" ? "selected" : "")>Ascending</option>
+                        <option value="desc" @(ViewBag.SortOrder == "desc" ? "selected" : "")>Descending</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary mx-3">Reset</a>
+                </div>
+            </div>
+            <div class="row pt-2 gap-3">
+                <div class="form-floating mb-3 col">
+                    <input type="date" class="form-control" name="travelMinStartDate" value="@ViewBag.TravelMinStartDate" />
+                    <label class="mx-2" for="travelMinStartDate">Start date from:</label>
+                </div>
+                <div class="form-floating mb-3 col">
+                    <input type="date" class="form-control" name="travelMaxStartDate" value="@ViewBag.TravelMaxStartDate" />
+                    <label class="mx-2" for="travelMaxStartDate">Start date to:</label>
+                </div>
+                <div class="form-floating mb-3 col">
+                    <input type="date" class="form-control" name="travelMinEndDate" value="@ViewBag.TravelMinEndDate" />
+                    <label class="mx-2" for="travelMinEndDate">End date from:</label>
+                </div>
+                <div class="form-floating mb-3 col">
+                    <input type="date" class="form-control" name="travelMaxEndDate" value="@ViewBag.TravelMaxEndDate" />
+                    <label class="mx-2" for="travelMaxEndDate">End date to:</label>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div>
+        @if (user != null && user.Role == web_project.Models.UserRole.Manager)
+        {
+            <div class="text-center mb-4">
+                <a href="@Url.Action("AddFullArrangement", "Arrangement")" class="btn btn-primary">
+                    Add New Arrangement
+                </a>
+            </div>
+        }
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm h-100 shadow"
+                         style="transition: transform 0.2s;"
+                         onmouseover="this.style.transform='scale(1.05)';"
+                         onmouseout="this.style.transform='scale(1)';">
+                        <img src="@Url.Content(item.ArrangementPicturePath)" class="card-img-top" alt="@item.Name" style="height:200px; object-fit:cover" />
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">@item.Name</h4>
+                            <p class="card-text">
+                                <strong>Type:</strong>
+                                @{
+                                    string display = "";
+                                    switch (item.ArrangementType)
+                                    {
+                                        case web_project.Models.ArrangementType.BedAndBreakfast:
+                                            display = "Night with breakfast";
+                                            break;
+                                        case web_project.Models.ArrangementType.HalfBoard:
+                                            display = "Half-board";
+                                            break;
+                                        case web_project.Models.ArrangementType.FullBoard:
+                                            display = "Full-board";
+                                            break;
+                                        case web_project.Models.ArrangementType.AllInclusive:
+                                            display = "All inclusive";
+                                            break;
+                                        case web_project.Models.ArrangementType.RentApartment:
+                                            display = "Rent apartment";
+                                            break;
+                                    }
+                                }
+                                @display
+                            </p>
+                            <p class="card-text">
+                                <strong>Transport:</strong>
+                                @{
+                                    string displayTransport = "";
+                                    switch (item.Transport)
+                                    {
+                                        case web_project.Models.TransportType.Bus:
+                                            {
+                                                displayTransport = "Bus";
+                                                break;
+                                            }
+                                        case web_project.Models.TransportType.Airplane:
+                                            {
+                                                displayTransport = "Plane";
+                                                break;
+                                            }
+                                        case web_project.Models.TransportType.BusAndAirplane:
+                                            {
+                                                displayTransport = "Bus and plane";
+                                                break;
+                                            }
+                                        case web_project.Models.TransportType.Individual:
+                                            {
+                                                displayTransport = "Individual";
+                                                break;
+                                            }
+                                        case web_project.Models.TransportType.Other:
+                                            {
+                                                displayTransport = "Other";
+                                                break;
+                                            }
+                                    }
+                                }
+                                @displayTransport
+                            </p>
+                            <p class="card-text"><strong>Location:</strong> @item.Location</p>
+                            <p class="card-text"><strong>Start:</strong> @item.TravelStartDate</p>
+                            <p class="card-text"><strong>End:</strong> @item.TravelEndDate</p>
+                            <div class="d-flex justify-content-center mt-3">
+                                <a href="@Url.Action("Details", "Home", new {id = @item.Id})" class="btn btn-primary">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</main>

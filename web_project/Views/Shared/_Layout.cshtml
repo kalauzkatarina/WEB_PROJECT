@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+@{
+    var currentUser = Session["user"] as web_project.Models.User;
+}
+<body style="background-color: #CBE1F5 ">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            @Html.ActionLink("Kalauz Tours", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    @if (currentUser != null)
+                    {
+                        if (currentUser.Role == web_project.Models.UserRole.Tourist)
+                        {
+                            <li>@Html.ActionLink("My Reservations", "Index", "Reservation", new { area = "" }, new { @class = "nav-link" })</li>
+                        }
+                        else if (currentUser.Role == web_project.Models.UserRole.Manager)
+                        {
+                            <li>@Html.ActionLink("My Arrangements", "MyArrangements", "Arrangement", new { area = "" }, new { @class = "nav-link" })</li>
+                        }
+                        else if (currentUser.Role == web_project.Models.UserRole.Administrator)
+                        {
+                            <li>@Html.ActionLink("Users", "AllUsers", "User", new { area = "" }, new { @class = "nav-link" })</li>
+                        }
+
+                    }
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    @if (currentUser == null)
+                    {
+                        <li>@Html.ActionLink("Login", "Index", "Authentication", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                    else
+                    {
+                        <li>
+                            @Html.ActionLink(currentUser.Username, "Details", "User", new { id = currentUser.Id }, new { @class = "nav-link" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Logout", "Logout", "Authentication", null, new { @class = "nav-link" })
+                        </li>
+                    }
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

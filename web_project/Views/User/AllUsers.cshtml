@@ -1,0 +1,64 @@
+﻿@model List<web_project.Models.User>
+@using web_project.Models
+@{
+    ViewBag.Title = "All Users";
+}
+
+<div class="container mt-4" style="max-width: 800px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">All Users</h2>
+        <a href="@Url.Action("AddManager", "User")" class="btn btn-primary">Add Manager</a>
+    </div>
+    <form method="get" class="row mb-4 g-2 justify-content-center">
+        <div class="col-md-3">
+            <input type="text" name="searchFirstName" class="form-control"
+                   placeholder="First name" value="@ViewBag.SearchFirstName" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="searchLastName" class="form-control"
+                   placeholder="Last name" value="@ViewBag.SearchLastName" />
+        </div>
+        <div class="col-md-3">
+            <select name="role" class="form-select">
+                <option value="">-- Role --</option>
+                @foreach (var r in Enum.GetValues(typeof(UserRole)))
+                {
+                    <option value="@r"
+                            @(ViewBag.Role != null && ViewBag.Role.ToString() == r.ToString() ? "selected" : "")>
+                        @r
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 d-flex">
+            <button type="submit" class="btn btn-primary me-2 flex-fill">Search</button>
+            <a href="@Url.Action("AllUsers", "User")" class="btn btn-secondary flex-fill">Reset</a>
+        </div>
+    </form>
+
+    <div class="user-list">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var user in Model)
+            {
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1 mb-2">@user.FirstName @user.LastName</h5>
+                            <p class="mb-1"><strong>Username:</strong> @user.Username</p>
+                            <p class="mb-0"><strong>Role:</strong> @user.Role</p>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Details", "User", new { id = user.Id })"
+                               class="btn btn-outline-primary btn-sm">Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted">No users found.</p>
+        }
+    </div>
+</div>

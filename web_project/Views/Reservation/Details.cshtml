@@ -1,0 +1,142 @@
+﻿@model web_project.Models.Reservation
+@{
+    ViewBag.Title = "Reservation Details";
+
+    var tourist = ViewBag.Tourist as web_project.Models.User;
+    var arrangement = ViewBag.Arrangement as web_project.Models.Arrangement;
+    var accommodation = ViewBag.Accommodation as web_project.Models.Accommodation;
+    var unit = ViewBag.Unit as web_project.Models.AccommodationUnit;
+
+    var currentUser = Session["user"] as web_project.Models.User;
+    bool isManager = currentUser != null && currentUser.Role == web_project.Models.UserRole.Manager;
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Reservation Details</h2>
+
+    <div class="card shadow mb-4" style="max-width: 900px; margin:auto;">
+        <div class="card-header text-center">
+            <h4>@arrangement.Name</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    @if (!string.IsNullOrEmpty(arrangement?.ArrangementPicturePath))
+                    {
+                        <img src="@Url.Content(arrangement.ArrangementPicturePath)" class="img-fluid rounded" alt="@arrangement.Name" style="object-fit:cover; width:100%; height:200px;" />
+                    }
+                    else
+                    {
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="width:100%; height:200px;">
+                            No Image
+                        </div>
+                    }
+                </div>
+                <div class="col-md-8">
+                    <p><strong>Location:</strong> @arrangement.Location</p>
+                    <p><strong>Travel Dates:</strong> @arrangement.TravelStartDate - @arrangement.TravelEndDate</p>
+                    <p>
+                        <strong>Type:</strong>
+                        @{
+                            var displayArrangementType = "";
+                            switch (arrangement.ArrangementType)
+                            {
+                                case web_project.Models.ArrangementType.BedAndBreakfast:
+                                    displayArrangementType = "Night with breakfast";
+                                    break;
+                                case web_project.Models.ArrangementType.HalfBoard:
+                                    displayArrangementType = "Half-board";
+                                    break;
+                                case web_project.Models.ArrangementType.FullBoard:
+                                    displayArrangementType = "Full-board";
+                                    break;
+                                case web_project.Models.ArrangementType.AllInclusive:
+                                    displayArrangementType = "All inclusive";
+                                    break;
+                                case web_project.Models.ArrangementType.RentApartment:
+                                    displayArrangementType = "Rent apartment";
+                                    break;
+                            }
+                        }
+                        @displayArrangementType
+                    </p>
+                    <p>
+                        <strong>Transport:</strong>
+                        @{
+                            var displayTransportType = "";
+                            switch (arrangement.Transport)
+                            {
+                                case web_project.Models.TransportType.Bus:
+                                    displayTransportType = "Bus";
+                                    break;
+                                case web_project.Models.TransportType.BusAndAirplane:
+                                    displayTransportType = "Bus and plane";
+                                    break;
+                                case web_project.Models.TransportType.Airplane:
+                                    displayTransportType = "Plane";
+                                    break;
+                                case web_project.Models.TransportType.Individual:
+                                    displayTransportType = "Individual";
+                                    break;
+                                case web_project.Models.TransportType.Other:
+                                    displayTransportType = "Other";
+                                    break;
+                            }
+                        }
+                        @displayTransportType
+                    </p>
+                    <p><strong>Description:</strong> @arrangement.ArrangementDescription</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4" style="max-width: 900px; margin:auto;">
+        <div class="card-header text-center">
+            <h4>@accommodation.Name</h4>
+        </div>
+        <div class="card-body">
+            @if (accommodation != null)
+            {
+                <div class="row text-start">
+                    <div class="col-md-6">
+                        <p><strong>Type:</strong> @accommodation.AccommodationType</p>
+                        <p><strong>Stars:</strong> @accommodation.NumberOfStars</p>
+                        <p><strong>Pool:</strong> @(accommodation.PoolExistence ? "Yes" : "No")</p>
+                        <p><strong>Spa Center:</strong> @(accommodation.SpaCentreExistence ? "Yes" : "No")</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Unit ID:</strong> @(unit != null ? unit.Id.ToString() : "-")</p>
+                        <p><strong>Accessible:</strong> @(accommodation.PeopleWDisabilities ? "Yes" : "No")</p>
+                        <p><strong>WiFi:</strong> @(accommodation.WiFi ? "Yes" : "No")</p>
+                        <p><strong>Max Guests:</strong> @(unit != null ? unit.MaxGuests.ToString() : "-")</p>
+                        <p><strong>Price:</strong> @(unit != null ? $"${unit.Price}" : "-")</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No accommodation info available.</p>
+            }
+        </div>
+    </div>
+
+
+    <div class="card shadow mb-4" style="max-width: 900px; margin:auto;">
+        <div class="card-header text-center">
+            <h4>Reservation Info</h4>
+        </div>
+        <div class="card-body text-center">
+            <p><strong>Reservation ID:</strong> @Model.Id</p>
+            <p><strong>Tourist:</strong> @(tourist != null ? tourist.FirstName + " " + tourist.LastName : "Unknown")</p>
+            <p><strong>Status:</strong> @Model.Status</p>
+        </div>
+    </div>
+
+    @if (isManager)
+    {
+        <div class="text-center mt-3">
+            <a href="@Url.Action("MyArrangements", "Arrangement")" class="btn btn-secondary">Back to My Arrangements</a>
+        </div>
+    }
+</div>
